@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './App.css'; // Ensure the correct CSS file is imported
+import './App.css'; 
 import FrontPage from './FrontPage';
 import Letters from './Letters';
 import Numbers from './Numbers';
