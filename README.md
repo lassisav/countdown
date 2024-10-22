@@ -1,6 +1,7 @@
 # Countdown app
 
 This is an application to play Countdown. Created for educational and non-commercial purposes only.
+Code partially created using OpenAI.
 
 ### Quickstart guide:
 
