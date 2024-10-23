@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Create an array to represent the tiles for vowels
 const initialVowelsBag = [
@@ -39,6 +39,10 @@ const Letters = ({ setView }) => {
   const [drawCount, setDrawCount] = useState(0); // Track the number of letters drawn
   const [vowelsBag, setVowelsBag] = useState(initialVowelsBag);
   const [consonantsBag, setConsonantsBag] = useState(initialConsonantsBag);
+
+  // Timer state
+  const [timeLeft, setTimeLeft] = useState(30); // Default time of 30 seconds
+  const [isTimerRunning, setIsTimerRunning] = useState(false); // Control timer state
 
   // Function to get a random vowel from the vowelsBag
   const getRandomVowel = () => {
@@ -104,25 +108,60 @@ const Letters = ({ setView }) => {
     }
   };
 
+  // Start the timer automatically when 9 letters are drawn
+  useEffect(() => {
+    if (drawCount === 9) {
+      setIsTimerRunning(true);
+    }
+  }, [drawCount]);
+
   // Handler for the Reset button
   const handleReset = () => {
     setText("");                  // Clear the generated text
     setDrawCount(0);             // Reset the draw count
     setVowelsBag(initialVowelsBag);      // Reset the vowels bag to its initial state
     setConsonantsBag(initialConsonantsBag); // Reset the consonants bag to its initial state
+    setTimeLeft(30);             // Reset timer
+    setIsTimerRunning(false);    // Stop the timer
+  };
+
+  // useEffect to handle the countdown logic
+  useEffect(() => {
+    let timer;
+    if (isTimerRunning && timeLeft > 0) {
+      timer = setTimeout(() => {
+        setTimeLeft(timeLeft - 1);
+      }, 1000);
+    }
+
+    // Cleanup the timer
+    return () => clearTimeout(timer);
+  }, [isTimerRunning, timeLeft]);
+
+  // Handler for the start button
+  const handleStartTimer = () => {
+    setIsTimerRunning(true);
   };
 
   return (
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
       <button onClick={() => setView('front')} style={{ position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)' }}>Front Page</button>
       <button onClick={() => setView('numbers')} style={{ position: 'absolute', top: 10, left: 10 }}>Numbers</button>
-      <h1>Random Letter Generator</h1>
+      <h1>Letters game</h1>
       <div>
         <button onClick={handleConsonantClick}>Consonant</button>
         <button onClick={handleVowelClick} style={{ marginLeft: '10px' }}>Vowel</button>
         <button onClick={handleReset} style={{ marginLeft: '10px' }}>Reset</button>
       </div>
       <p className="text-display">{text}</p>
+
+      {/* Timer display */}
+      <div style={{ marginTop: '20px' }}>
+        <h2>Time Left: {timeLeft} seconds</h2>
+        {!isTimerRunning && drawCount < 9 && (
+          <button onClick={handleStartTimer}>Start</button>
+        )}
+      </div>
     </div>
   );
 };

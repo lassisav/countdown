@@ -21,8 +21,8 @@
 .text-display {
   margin-top: 20px;
   font-size: 24px;
-  height: 40px; /* Set a fixed height to prevent movement */
-  border: 1px solid #ccc; /* Optional: Add a border to visualize the area */
+  height: 40px; 
+  border: 1px solid #ccc; 
   padding: 5px;
   overflow: hidden; /* Prevent overflow of text */
   white-space: nowrap; /* Prevent line breaks */
